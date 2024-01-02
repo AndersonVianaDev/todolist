@@ -29,4 +29,9 @@ public class TaskService {
         return obj.get();
     }
 
+    public void deleteTask(Long id) {
+        Task obj = findById(id);
+        repository.delete(obj);
+    }
+
 }
