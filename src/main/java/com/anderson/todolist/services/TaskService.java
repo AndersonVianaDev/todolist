@@ -6,6 +6,8 @@ import com.anderson.todolist.repositories.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class TaskService {
 
@@ -19,6 +21,12 @@ public class TaskService {
         obj.setUser(user);
 
         return repository.save(obj);
+    }
+
+    public Task findById(Long id) {
+        Optional<Task> obj = repository.findById(id);
+
+        return obj.get();
     }
 
 }
