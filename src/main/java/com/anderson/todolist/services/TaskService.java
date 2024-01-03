@@ -34,7 +34,12 @@ public class TaskService {
 
     public void deleteTask(Long id) {
         try {
-            repository.deleteById(id);
+            Task obj = findById(id);
+            if (obj.getConcluded() == true) {
+                repository.delete(obj);
+            } else {
+                throw new DatabaseException("Unauthorized delete task before completed");
+            }
         } catch (EmptyResultDataAccessException e ) {
             throw new ControllerNotFoundException(e.getMessage());
         } catch (DatabaseException e) {
