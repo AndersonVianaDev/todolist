@@ -5,8 +5,8 @@ import com.anderson.todolist.entities.User;
 import com.anderson.todolist.repositories.TaskRepository;
 import com.anderson.todolist.services.exceptions.ControllerNotFoundException;
 import com.anderson.todolist.services.exceptions.DatabaseException;
+import com.anderson.todolist.services.exceptions.UnauthorizedException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -38,10 +38,9 @@ public class TaskService {
             if (obj.getConcluded() == true) {
                 repository.delete(obj);
             } else {
-                throw new DatabaseException("Unauthorized delete task before completed");
+                throw new UnauthorizedException("Unauthorized delete task before completed");
             }
-        } catch (EmptyResultDataAccessException e ) {
-            throw new ControllerNotFoundException(e.getMessage());
+
         } catch (DatabaseException e) {
             throw new DatabaseException(e.getMessage());
         }
