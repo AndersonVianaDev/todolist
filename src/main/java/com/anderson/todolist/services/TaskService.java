@@ -3,7 +3,10 @@ package com.anderson.todolist.services;
 import com.anderson.todolist.entities.Task;
 import com.anderson.todolist.entities.User;
 import com.anderson.todolist.repositories.TaskRepository;
+import com.anderson.todolist.services.exceptions.ControllerNotFoundException;
+import com.anderson.todolist.services.exceptions.DatabaseException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -26,12 +29,18 @@ public class TaskService {
     public Task findById(Long id) {
         Optional<Task> obj = repository.findById(id);
 
-        return obj.get();
+        return obj.orElseThrow(() -> new ControllerNotFoundException(id));
     }
 
     public void deleteTask(Long id) {
-        Task obj = findById(id);
-        repository.delete(obj);
+        try {
+            repository.deleteById(id);
+        } catch (EmptyResultDataAccessException e ) {
+            throw new ControllerNotFoundException(e.getMessage());
+        } catch (DatabaseException e) {
+            throw new DatabaseException(e.getMessage());
+        }
+
     }
 
     public Task updateTask(Long id, Task task) {

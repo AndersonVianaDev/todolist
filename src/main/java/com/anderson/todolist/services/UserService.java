@@ -3,6 +3,7 @@ package com.anderson.todolist.services;
 import com.anderson.todolist.entities.Task;
 import com.anderson.todolist.entities.User;
 import com.anderson.todolist.repositories.UserRepository;
+import com.anderson.todolist.services.exceptions.ControllerNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class UserService {
 
     public User findById(Long id) {
         Optional<User> obj = repository.findById(id);
-        return obj.get();
+        return obj.orElseThrow(() -> new ControllerNotFoundException(id));
     }
 
     public User saveTaskToUser(Long id, Task task) {
