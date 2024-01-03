@@ -34,4 +34,11 @@ public class TaskService {
         repository.delete(obj);
     }
 
+    public Task updateTask(Long id, Task task) {
+        Task obj = findById(id);
+        obj.setConcluded(task.getConcluded());
+
+        return repository.save(obj);
+    }
+
 }

@@ -25,13 +25,21 @@ public class TaskController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Task> findById(@PathVariable Long id) {
-        Task task = service.findById(id);
-        return ResponseEntity.ok().body(task);
+        Task obj = service.findById(id);
+        return ResponseEntity.ok().body(obj);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.deleteTask(id);
         return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody Task task) {
+        task.setId(id);
+        Task obj = service.updateTask(id, task);
+
+        return ResponseEntity.ok().body(obj);
     }
 }
